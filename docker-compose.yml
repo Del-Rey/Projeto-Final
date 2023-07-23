@@ -1,0 +1,84 @@
+version: '3.3'
+
+services:
+    proxy:
+        build: 
+            context: ./proxy
+            dockerfile: Dockerfile
+        image: proxy
+        container_name: proxy
+        restart: always
+        ports:
+            - "8080:80"
+        depends_on:
+            - intranet
+            - portal
+    dns:
+        build:
+            context: ./dns
+            dockerfile: Dockerfile
+        image: dns
+        container_name: dns
+        hostname: ns1.konoha.br
+        restart: always
+        tty: true
+        ports:
+            - "53:53/tcp"
+            - "53:53/udp"
+    mail:
+        build:
+            context: ./mail
+            dockerfile: Dockerfile
+        image: email
+        container_name: mail
+        hostname: mail.konoha.br
+        restart: always
+        tty: true
+        ports:
+            - "25:25/tcp"
+            - "587:587/tcp"
+    portal:
+        build: 
+            context: ./portal/site
+            dockerfile: Dockerfile
+        image: app
+        container_name: portal
+        restart: always
+    intranet:
+        build: 
+            context: ./intranet/wordpress
+            dockerfile: Dockerfile
+        image: wordpress
+        container_name: intranet
+        restart: always
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: wpuser
+            WORDPRESS_DB_PASSWORD: wppass
+            WORDPRESS_DB_NAME: wpdb
+        volumes:
+            - ./intranet/wordpress/src/:/var/www/html/wp-content/plugins
+    db:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_DATABASE: wpdb
+            MYSQL_USER: wpuser
+            MYSQL_PASSWORD: wppass
+            MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        volumes:
+            - db:/var/lib/mysql
+    adminer:
+        depends_on:
+            - db
+        image: adminer
+        restart: always
+
+#Docker Networks
+networks:
+    back:
+        
+volumes:
+    db:
+
+  

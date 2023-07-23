@@ -1,0 +1,8 @@
+zone "konoha.br" {
+	type master;
+	file "/etc/bind/db.konoha.br";			// Change to zone file path
+	allow-transfer { any; }; // IP addresses of secondary servers allowed to
+									 // transfer example.com from this server
+
+};
+

@@ -1,0 +1,34 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800 ; default TTL for zone
+@         IN	SOA	konoha.br. hostmaster.konoha.br. (
+					  1		; Serial number 
+				 604800		; Refresh
+				  86400 	; update retry
+				2419200		; Expiry
+				 604800 	; Negative Cache TTL
+						)	
+
+		IN	NS	ns1.konoha.br.    ; name server RR for the domain	
+		IN  NS  ns2.konoha.br.    ; the second name server is external to this zone (domain)
+		IN  MX 10 mail.konoha.br. ; the second  mail servers is  external to the zone (domain)
+
+; domain hosts includes NS and MX records defined above
+; plus any others required
+; for instance a user query for the A RR of pb.br 
+; return the IPv4 address 192.168.0.4
+
+
+ns1        IN      A       192.168.0.4
+ns2 	   IN      A	   192.168.0.5
+mail       IN      A       192.168.0.4
+
+www		   IN	  CNAME	   192.168.0.4
+
+smtp	   IN	  CNAME	   mail
+imap	   IN	  CNAME	   mail
+pop		   IN     CNAME	   mail
+
+portal     IN     CNAME    www
+intranet   IN     CNAME    www
