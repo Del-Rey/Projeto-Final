@@ -1,17 +1,23 @@
-FROM ubuntu:20.04
+FROM ubuntu:latest
 
 RUN apt update
 
 RUN apt upgrade -y
 
-RUN apt install postfix dnsutils iputils-ping telnet -y
+RUN apt install postfix dovecot-imapd dovecot-pop3d vim dnsutils iputils-ping telnet -y lsof -y
 
 COPY main.cf /etc/postfix
 
-# Add User
-#RUN useradd -c 'User Bob' -m -s /bin/false bob
+COPY ./dovecot/* /etc/dovecot/conf.d
 
-# Set user passord
-# RUN echo -e "pwd123" | passwd bob
+COPY start_email.sh /etc/init.d
 
-CMD ["postfix", "start-fg"]
+RUN chmod 755 /etc/init.d/start_email.sh
+
+# PORTAS
+EXPOSE 25/tcp 587/tcp 110/tcp 143/tcp 993/tcp 995/tcp
+
+CMD ["/etc/init.d/start_email.sh"]
+
+#start teh postfix Service
+#CMD ["/usr/sbin/postfix", "start-fg"]

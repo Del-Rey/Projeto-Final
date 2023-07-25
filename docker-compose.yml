@@ -13,6 +13,7 @@ services:
         depends_on:
             - intranet
             - portal
+
     dns:
         build:
             context: ./dns
@@ -24,32 +25,40 @@ services:
         tty: true
         ports:
             - "53:53/tcp"
-            - "53:53/udp"
+            - "53:53/udp"  
+
     mail:
         build:
             context: ./mail
             dockerfile: Dockerfile
-        image: email
+        image: mail_server
         container_name: mail
         hostname: mail.konoha.br
         restart: always
         tty: true
         ports:
-            - "25:25/tcp"
-            - "587:587/tcp"
+            - "25:25/tcp" # SMTP  
+            - "587:587/tcp" # SMTP  
+            - "110:110/tcp" # POP3 
+            - "995:995/tcp" # POP3 
+            - "143:143/tcp"  # IMAP4 
+            - "993:993/tcp" # IMAP4 
+    
     portal:
         build: 
             context: ./portal/site
             dockerfile: Dockerfile
         image: app
         container_name: portal
-        restart: always
+        hostname: portal.konoha.br
+
     intranet:
         build: 
             context: ./intranet/wordpress
             dockerfile: Dockerfile
         image: wordpress
         container_name: intranet
+        hostname: intranet.konoha.br
         restart: always
         environment:
             WORDPRESS_DB_HOST: db
@@ -77,7 +86,7 @@ services:
 #Docker Networks
 networks:
     back:
-        
+        driver: bridge
 volumes:
     db:
 
