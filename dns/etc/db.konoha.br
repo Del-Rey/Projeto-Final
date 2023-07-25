@@ -12,19 +12,13 @@ $ORIGIN   konoha.br.
 						)	
 
 		IN	NS	ns1.konoha.br.    ; name server RR for the domain	
-		IN  NS  ns2.konoha.br.    ; the second name server is external to this zone (domain)
 		IN  MX 10 mail.konoha.br. ; the second  mail servers is  external to the zone (domain)
 
-; domain hosts includes NS and MX records defined above
-; plus any others required
-; for instance a user query for the A RR of pb.br 
-; return the IPv4 address 192.168.0.4
+; domain hosts includes NS and MX records defined 
 
-
-ns1        IN      A       192.168.0.3
-ns2 	   IN      A	   192.168.0.4
-mail       IN      A       192.168.0.3
-www		   IN	   A	   192.168.0.3
+ns1        IN      A        10.25.1.177
+mail       IN      A        10.25.1.177
+www		   IN	   A	    10.25.1.177
 
 smtp	   IN	  CNAME	   mail
 imap	   IN	  CNAME	   mail
