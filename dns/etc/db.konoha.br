@@ -16,9 +16,9 @@ $ORIGIN   konoha.br.
 
 ; domain hosts includes NS and MX records defined 
 
-ns1        IN      A        10.25.1.177
-mail       IN      A        10.25.1.177
-www		   IN	   A	    10.25.1.177
+ns1        IN      A        10.24.6.44
+mail       IN      A        10.24.6.44
+www		   IN	   A	    10.24.6.44
 
 smtp	   IN	  CNAME	   mail
 imap	   IN	  CNAME	   mail
